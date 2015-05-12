@@ -36,7 +36,7 @@ public class Cella {
         throw new Exception("Raggiunto numero massimo di connessioni");
     }
 
-    public Cella disconnectTel(TelefonoBase t) throws Exception {
+    public Cella disconnectTel(TelefonoBase t) {
         alTelConnessi.remove(t);
         return this;
     }

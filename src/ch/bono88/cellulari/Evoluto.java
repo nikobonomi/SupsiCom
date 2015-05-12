@@ -18,7 +18,7 @@ public class Evoluto extends TelefonoBase {
 
     public Evoluto() {
         super();
-
+        this.avvisiChiamate = new ArrayList<>();
     }
 
     public void incCall(String numero, int durata) {

@@ -1,5 +1,7 @@
 package ch.bono88.supsicom;
 
+import ch.bono88.cellulari.NextGen;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -13,7 +15,7 @@ public class Main {
             supsiCom.insertCella(12);
 
             Utente u = supsiCom.insertCliente("Niko", "Bonomi", 6826, 123456789);
-            TelefonoBase t = new TelefonoBase();
+            TelefonoBase t = new NextGen();
             Sim s = supsiCom.insertContratto(u, Contratto.TIPO_ABB, Tariffe.TIPO_TAR_BASE);
             t.setSim(s.assocTelf(t));
             u.addTelefono(t);
@@ -32,6 +34,12 @@ public class Main {
             t2.call(t.getSim().getNumeroTelefono(), 10);
 
             t.sendSMS(t2.getSim().getNumeroTelefono(), "Ciao!! Questo è un sms!");
+
+            t.turnOff();
+
+            t2.call(t.getSim().getNumeroTelefono(), 10);
+
+            t.turnOn(supsiCom.getRandomCella());
 
             u2.printReg();
 

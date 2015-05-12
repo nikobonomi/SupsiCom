@@ -102,6 +102,12 @@ public class SupsiCom {
                 if (t!= null)
                     return t;
             }
+            //se arrivo qui vuol dire che il telefono non è connesso ad alcuna cella
+            for(Contratto c: alContratti)
+                if(c.getSim().getNumeroTelefono().equals(numeroTel))
+                    return c.getSim().getTel();
+
+
         else
             throw new Exception("Numero inesistente");
         

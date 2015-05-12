@@ -1,5 +1,7 @@
 package ch.bono88.supsicom;
 
+import ch.bono88.cellulari.Evoluto;
+import ch.bono88.cellulari.NextGen;
 import ch.bono88.storico.Chiamata;
 import ch.bono88.storico.SMS;
 
@@ -26,20 +28,24 @@ public class TelefonoBase {
         if (c.connPossibile()) {
             this.cellaConnesso = c;
             c.connectTel(this);
-        }
-        else
+        } else
             throw new Exception("Raggiunto numero massimo connessioni per cella");
     }
-
 
 
     public void call(String numero, int durata) throws Exception {
         TelefonoBase tRic = cellaConnesso.getMaster().findTel(numero);
 
-        if (tRic.equals(null)) {
-            throw new Exception("Telefono spento");
+        if (!tRic.isOn()) {
+
             //se il telefono non è di base allora posso lasciare un'avviso di chiamata
             //cerco il telefono direttamente da supsicom senza passare dalle celle
+
+            if (tRic instanceof Evoluto ||tRic instanceof NextGen)
+                ((Evoluto) tRic).addToAvvisoCall(numero);
+            else
+                throw new Exception("Telefono spento");
+
         } else {
             //telefono acceso
             if (!tRic.isConnected()) {
@@ -118,6 +124,7 @@ public class TelefonoBase {
 
     public void turnOff() {
         this.isOn = false;
+        cellaConnesso.disconnectTel(this);
     }
 
     public boolean isOn() {
