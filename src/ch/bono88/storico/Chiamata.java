@@ -1,0 +1,53 @@
+package ch.bono88.storico;
+
+import java.util.Date;
+
+
+public class Chiamata {
+  private String numero;
+  private Date data;
+  private int durata;
+  private boolean isVideocall;
+  private boolean isIncoming;
+  
+  public Chiamata(String numero, int durata, boolean isVideocall, boolean isIncoming){
+    this.numero = numero;
+    this.data = new Date();
+    this.durata = durata;
+    this.isVideocall = isVideocall;
+    this.isIncoming = isIncoming;
+  }
+  
+  @Override
+  public String toString(){
+    return new StringBuilder()
+      .append("Da: ")
+      .append(numero)
+      .append(" Durata: ")
+      .append(durata)
+      .append(" Data")
+      .append(data)
+      .toString();
+  }
+  
+  public String getNumero(){
+    return this.numero;
+  }
+  
+  public int getDurata(){
+    return this.durata;
+  }
+  
+  public Date getData(){
+    return this.data;
+  }
+  
+  public boolean isVideoCall(){
+    return this.isVideocall;
+  }
+  
+  public boolean isIncoming(){
+    return this.isIncoming;
+  }
+  
+}
