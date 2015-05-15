@@ -1,7 +1,6 @@
 package ch.bono88.supsicom;
 
 import ch.bono88.cellulari.NextGen;
-import ch.bono88.contratti.Prepagato;
 
 public class Main {
 

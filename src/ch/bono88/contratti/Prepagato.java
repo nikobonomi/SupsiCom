@@ -8,6 +8,8 @@ import ch.bono88.tariffe.Base;
 import ch.bono88.tariffe.CallNight;
 import ch.bono88.tariffe.TopFriend;
 
+import java.util.Date;
+
 public class Prepagato extends Contratto {
     private float saldo;
 
@@ -32,7 +34,20 @@ public class Prepagato extends Contratto {
             saldo -= ((TopFriend) tariffa).getCallCost(c);
         else if(tariffa instanceof CallNight)
             saldo -= ((CallNight) tariffa).getCallCost(c);
-
         else throw new Exception("Nessuna tariffa trovata!");
+    }
+
+    public void accreditaSMS(){
+        //todo fare controllo 2 anni per tariffa fedelt`a
+        saldo -= tariffa.PRICE_SMS;
+    }
+
+    public void accreditaMMS(){
+        //todo fare controllo 2 anni per tariffa fedelt`a
+        saldo -= tariffa.PRICE_MMS;
+    }
+
+    private void accreditaVideoCall(Chiamata c){
+        saldo -= tariffa.PRICE_VIDEOCALL *c.getDurata();
     }
 }
