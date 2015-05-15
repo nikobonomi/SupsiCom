@@ -19,6 +19,7 @@ public class Main {
             Sim s = supsiCom.insertContratto(u, Contratto.TIPO_ABB, Tariffe.TIPO_TAR_BASE);
             t.setSim(s.assocTelf(t));
             u.addTelefono(t);
+            t.enableSegreteria(true);
 
             t.turnOn(supsiCom.getRandomCella());
 
@@ -31,7 +32,13 @@ public class Main {
             t2.turnOn(supsiCom.getRandomCella());
 
 
-            t2.call(t.getSim().getNumeroTelefono(), 10);
+            if(!t2.call(t.getSim().getNumeroTelefono(), 10)){
+                //se la chiamata non è stata effettuata verifico
+                // e posso aggiungere un messaggio in segreteria
+                if(t.hasSegreteriaEnabled())
+                    t.addSegreteria(t2.getSim().getNumeroTelefono(),"Messaggio di segreteria",10);
+
+            }
 
             t.sendSMS(t2.getSim().getNumeroTelefono(), "Ciao!! Questo è un sms!");
 

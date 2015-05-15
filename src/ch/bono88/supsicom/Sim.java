@@ -6,17 +6,15 @@ import ch.bono88.utils.NumeroTelefono;
 public class Sim {
     private NumeroTelefono numeroTelefono;
     private TelefonoBase   telefonoAssociato;
+    private Contratto contratto;
 
     public Sim(NumeroTelefono numeroTelefono) {
         this.numeroTelefono = numeroTelefono;
-
     }
 
     public Sim assocTelf(TelefonoBase t) {
         this.telefonoAssociato = t;
         return this;
-
-
     }
 
     public TelefonoBase getTel() {
@@ -25,5 +23,25 @@ public class Sim {
 
     public String getNumeroTelefono() {
         return this.numeroTelefono.toString();
+    }
+
+    public void setNumeroTelefono(NumeroTelefono numeroTelefono) {
+        this.numeroTelefono = numeroTelefono;
+    }
+
+    public TelefonoBase getTelefonoAssociato() {
+        return telefonoAssociato;
+    }
+
+    public void setTelefonoAssociato(TelefonoBase telefonoAssociato) {
+        this.telefonoAssociato = telefonoAssociato;
+    }
+
+    public Contratto getContratto() {
+        return contratto;
+    }
+
+    public void setContratto(Contratto contratto) {
+        this.contratto = contratto;
     }
 }

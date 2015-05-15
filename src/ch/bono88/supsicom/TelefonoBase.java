@@ -1,20 +1,22 @@
 package ch.bono88.supsicom;
 
 import ch.bono88.cellulari.Evoluto;
-import ch.bono88.cellulari.NextGen;
+import ch.bono88.contratti.Prepagato;
 import ch.bono88.storico.Chiamata;
 import ch.bono88.storico.SMS;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TelefonoBase {
     protected Sim sim;
     protected boolean isOn;
     protected Cella cellaConnesso;
-    protected ArrayList<Chiamata> regChiamate;
-    protected ArrayList<SMS> regSMS;
+    protected List<Chiamata> regChiamate;
+    protected List<SMS> regSMS;
     protected boolean isConnected;
-    protected ArrayList<SMS> avvisoSMS;
+    protected List<SMS> avvisoSMS;
+    protected List<Segreteria> alSegreterie;
 
 
     public TelefonoBase() {
@@ -32,21 +34,28 @@ public class TelefonoBase {
             throw new Exception("Raggiunto numero massimo connessioni per cella");
     }
 
+    public void enableSegreteria(boolean enable){
+        cellaConnesso.getMaster().enableSegreteria(sim,enable);
+    }
 
-    public void call(String numero, int durata) throws Exception {
+    public boolean hasSegreteriaEnabled(){
+        return cellaConnesso.getMaster().hasSegreteria(sim);
+    }
+
+    public boolean call(String numero, int durata) throws Exception {
         TelefonoBase tRic = cellaConnesso.getMaster().findTel(numero);
 
-        if (!tRic.isOn()) {
+        if (!tRic.isOn())
 
             //se il telefono non è di base allora posso lasciare un'avviso di chiamata
             //cerco il telefono direttamente da supsicom senza passare dalle celle
 
-            if (tRic instanceof Evoluto ||tRic instanceof NextGen)
+            if (tRic instanceof Evoluto)
                 ((Evoluto) tRic).addToAvvisoCall(numero);
             else
                 throw new Exception("Telefono spento");
 
-        } else {
+        else
             //telefono acceso
             if (!tRic.isConnected()) {
 
@@ -57,13 +66,23 @@ public class TelefonoBase {
                 addToRegCall(numero, durata, false);
                 tRic.incCall(numero, durata);
 
+                if(sim.getContratto() instanceof Prepagato){
+                    //todo acconto il costo della chiamata
+
+                }
+                else{
+                    //todo in caso di abbonamento
+                }
+
                 //chiudo la comunicazione
                 tRic.disconnect();
 
-            } else {
+                return true;
+            } else
                 throw new Exception("Telefono occupato");
-            }
-        }
+
+
+        return false;
 
     }
 
@@ -111,6 +130,7 @@ public class TelefonoBase {
     }
 
     public void turnOn(Cella c) throws Exception {
+
         this.isOn = true;
         //se ci sono sms in attesa di ricezione li "ricevo"
         if (avvisoSMS.size() > 0) {
@@ -118,8 +138,12 @@ public class TelefonoBase {
                 addToRegSMS(s);
             avvisoSMS.clear();
         }
-
         connectCella(c);
+
+       List<Segreteria> seg = cellaConnesso.getMaster().getSegreterie(sim);
+
+        if(seg.size()>0)
+            alSegreterie.addAll(seg);
     }
 
     public void turnOff() {
@@ -163,11 +187,15 @@ public class TelefonoBase {
         avvisoSMS.add(new SMS(numero, false, messaggio, true));
     }
 
-    public ArrayList<Chiamata> getRegChiamate() {
+    public void addSegreteria(String num, String message, int durata){
+        cellaConnesso.getMaster().addSegreteria(new Segreteria(message, num, sim,durata));
+    }
+
+    public List<Chiamata> getRegChiamate() {
         return regChiamate;
     }
 
-    public ArrayList<SMS> getRegSMS() {
+    public List<SMS> getRegSMS() {
         return regSMS;
     }
 }

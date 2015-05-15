@@ -7,18 +7,52 @@ import ch.bono88.contratti.Abbonamento;
 import ch.bono88.contratti.Prepagato;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SupsiCom {
-  private ArrayList<Contratto> alContratti;
-  private ArrayList<Cella> alCelle;
-  private ArrayList<Utente> alClienti;
-  
-  public static final String SUPSICOM_PREFIX = "071";
-  
+    private List<Contratto> alContratti;
+    private List<Cella> alCelle;
+    private List<Utente> alClienti;
+    private List<Segreteria> alSegreterie;
+
+    public static final String SUPSICOM_PREFIX = "071";
+
     public SupsiCom() {
-        alContratti = new ArrayList<Contratto>();
-        alCelle = new ArrayList<Cella>();
-        alClienti = new ArrayList<Utente>();
+        alContratti = new ArrayList<>();
+        alCelle = new ArrayList<>();
+        alClienti = new ArrayList<>();
+        alSegreterie = new ArrayList<>();
+    }
+
+    public void enableSegreteria(Sim s, boolean enable) {
+        for (Contratto c : alContratti)
+            if (c.getSim().equals(s))
+                c.setHasSegreteriaAbilitata(enable);
+    }
+
+    public boolean hasSegreteria(Sim s) {
+        for (Contratto c : alContratti)
+            if (c.getSim().equals(s))
+                return c.isHasSegreteriaAbilitata();
+        return false;
+    }
+
+    public void addSegreteria(Segreteria s) {
+        alSegreterie.add(s);
+    }
+
+    public List<Segreteria> getSegreterie(Sim s) {
+        List<Segreteria> mySeg = new ArrayList<>();
+        for (Segreteria seg : alSegreterie)
+            if (seg.getRicevente().equals(s))
+                mySeg.add(seg);
+
+        //Tolgo tutti i messaggi in segreteria
+        alSegreterie.removeAll(mySeg);
+
+
+        return mySeg;
+
     }
 
     public Utente insertCliente(String strNome, String strCognome, int intCAP, double dAVS) throws Exception {
@@ -42,15 +76,19 @@ public class SupsiCom {
         int idCella = r.getIntInRange(0, alCelle.size());
         return alCelle.get(0);
     }
-  
+
     public Sim insertContratto(Utente u, int contractType, int tariffaType) throws Exception {
 
         Sim s = new Sim(generaNumero());
-
+        Contratto c;
         if (contractType == Contratto.TIPO_ABB)
-            alContratti.add(new Abbonamento(u, s, tariffaType));
-        else if (contractType == Contratto.TIPO_PRE)
-            alContratti.add(new Prepagato(u, s, tariffaType));
+            c = new Abbonamento(u, s, tariffaType);
+        else
+            c = new Prepagato(u, s, tariffaType);
+
+
+        alContratti.add(c);
+        s.setContratto(c);
 
         return s;
 
@@ -61,7 +99,7 @@ public class SupsiCom {
         alCelle.add(c);
         return c;
     }
-  
+
     public Utente getCliente(String nome, String cognome) throws Exception {
 
         for (Utente u : alClienti)
@@ -69,14 +107,14 @@ public class SupsiCom {
                 return u;
         throw new Exception("Il cliente cercato non è stato trovato");
     }
-  
+
     public Utente getCliente(double nAvs) throws Exception {
         for (Utente u : alClienti)
             if (u.getAVS() == nAvs)
                 return u;
         throw new Exception("Il cliente cercato non è stato trovato");
     }
-    
+
     private NumeroTelefono generaNumero() {
         NumeroTelefono n;
         MyRandom r = new MyRandom();
@@ -86,32 +124,32 @@ public class SupsiCom {
 
         return n;
     }
-  
+
     private boolean checkNumberExists(String n) {
         for (Contratto c : alContratti)
             if (c.getSim().getNumeroTelefono().equals(n))
                 return true;
         return false;
     }
-  
+
     public TelefonoBase findTel(String numeroTel) throws Exception {
         TelefonoBase t;
         if (checkNumberExists(numeroTel))
             for (Cella c : alCelle) {
                 t = c.getConnTel(numeroTel);
-                if (t!= null)
+                if (t != null)
                     return t;
             }
-            //se arrivo qui vuol dire che il telefono non è connesso ad alcuna cella
-            for(Contratto c: alContratti)
-                if(c.getSim().getNumeroTelefono().equals(numeroTel))
-                    return c.getSim().getTel();
+        //se arrivo qui vuol dire che il telefono non è connesso ad alcuna cella
+        for (Contratto c : alContratti)
+            if (c.getSim().getNumeroTelefono().equals(numeroTel))
+                return c.getSim().getTel();
 
 
-        else
-            throw new Exception("Numero inesistente");
-        
-      return null;
-  }
-  
+            else
+                throw new Exception("Numero inesistente");
+
+        return null;
+    }
+
 }
