@@ -100,6 +100,14 @@ public class SupsiCom {
         return c;
     }
 
+    public List<Contratto> getContrattiForUser(Utente u) {
+        List<Contratto> contr = new ArrayList<>();
+        for (Contratto c : alContratti)
+            if (c.getFirmatario().equals(u))
+                contr.add(c);
+        return contr;
+    }
+
     public Utente getCliente(String nome, String cognome) throws Exception {
 
         for (Utente u : alClienti)

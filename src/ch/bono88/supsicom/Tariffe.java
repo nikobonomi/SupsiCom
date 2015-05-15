@@ -6,6 +6,10 @@ public abstract class Tariffe {
     public static final int TIPO_TAR_CNIG = 1;
     public static final int TIPO_TAR_TFRI = 2;
 
+    public static final float PRICE_SMS= 0.05f;
+    public static final float PRICE_MMS= 0.10f;
+    public static final float PRICE_VIDEOCALL= 0.20f;
+
     public Tariffe() {
 
     }

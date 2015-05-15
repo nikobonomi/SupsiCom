@@ -7,7 +7,7 @@ import ch.bono88.tariffe.TopFriend;
 public abstract class Contratto {
     private Utente uFirmatario;
     private Sim sim;
-    private Tariffe tariffa;
+    protected Tariffe tariffa;
     private boolean hasSegreteriaAbilitata;
 
     //tipologia che si utilizza nella creazione epr sapere

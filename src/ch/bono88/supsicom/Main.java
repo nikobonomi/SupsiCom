@@ -1,6 +1,7 @@
 package ch.bono88.supsicom;
 
 import ch.bono88.cellulari.NextGen;
+import ch.bono88.contratti.Prepagato;
 
 public class Main {
 
@@ -19,17 +20,18 @@ public class Main {
             Sim s = supsiCom.insertContratto(u, Contratto.TIPO_ABB, Tariffe.TIPO_TAR_BASE);
             t.setSim(s.assocTelf(t));
             u.addTelefono(t);
-            t.enableSegreteria(true);
 
             t.turnOn(supsiCom.getRandomCella());
 
+            t.enableSegreteria(true);
 
             Utente u2 = supsiCom.insertCliente("Federico", "Carmine", 4568, 987654321);
             TelefonoBase t2 = new TelefonoBase();
-            Sim s2 = supsiCom.insertContratto(u2, Contratto.TIPO_ABB, Tariffe.TIPO_TAR_BASE);
+            Sim s2 = supsiCom.insertContratto(u2, Contratto.TIPO_PRE, Tariffe.TIPO_TAR_BASE);
             t2.setSim(s2.assocTelf(t2));
             u2.addTelefono(t2);
             t2.turnOn(supsiCom.getRandomCella());
+
 
 
             if(!t2.call(t.getSim().getNumeroTelefono(), 10)){
@@ -49,6 +51,7 @@ public class Main {
             t.turnOn(supsiCom.getRandomCella());
 
             u2.printReg();
+
 
 
         } catch (Exception e) {

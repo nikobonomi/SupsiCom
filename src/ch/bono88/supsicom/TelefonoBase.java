@@ -34,7 +34,9 @@ public class TelefonoBase {
             throw new Exception("Raggiunto numero massimo connessioni per cella");
     }
 
-    public void enableSegreteria(boolean enable){
+    public void enableSegreteria(boolean enable)throws Exception{
+        if(cellaConnesso ==null)
+            throw new Exception("Il telefono deve essere connesso per poter attivare la segreteria!!");
         cellaConnesso.getMaster().enableSegreteria(sim,enable);
     }
 
@@ -62,13 +64,15 @@ public class TelefonoBase {
                 //mi connetto al telefono
                 tRic.connect();
 
+                //creo la chiamata
+                Chiamata c = new Chiamata(numero, durata, false, true);
+
                 //registro la chiamata corrente nel registro
-                addToRegCall(numero, durata, false);
+                addToRegCall(c);
                 tRic.incCall(numero, durata);
 
                 if(sim.getContratto() instanceof Prepagato){
-                    //todo acconto il costo della chiamata
-
+                    ((Prepagato) sim.getContratto()).accreditaChiamata(c);
                 }
                 else{
                     //todo in caso di abbonamento
