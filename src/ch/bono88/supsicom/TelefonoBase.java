@@ -1,6 +1,7 @@
 package ch.bono88.supsicom;
 
 import ch.bono88.cellulari.Evoluto;
+import ch.bono88.contratti.Abbonamento;
 import ch.bono88.contratti.Prepagato;
 import ch.bono88.storico.Chiamata;
 import ch.bono88.storico.SMS;
@@ -75,7 +76,7 @@ public class TelefonoBase {
                     ((Prepagato) sim.getContratto()).accreditaChiamata(c);
                 }
                 else{
-                    //todo in caso di abbonamento
+                    ((Abbonamento) sim.getContratto()).accreditaChiamata(c);
                 }
 
                 //chiudo la comunicazione
@@ -106,6 +107,13 @@ public class TelefonoBase {
 
         //salvo l'sms nel registro del telefono
         addToRegSMS(numero, testo, false);
+
+        if(sim.getContratto() instanceof Prepagato){
+            ((Prepagato) sim.getContratto()).accreditaSMS();
+        }
+        else{
+           ((Abbonamento) sim.getContratto()).accreditaSMS(numero);
+        }
 
         //aggiungo l'sms al destinatario
         tRic.incSMS(numero, testo);

@@ -2,6 +2,8 @@ package ch.bono88.cellulari;
 
 import java.util.ArrayList;
 
+import ch.bono88.contratti.Abbonamento;
+import ch.bono88.contratti.Prepagato;
 import ch.bono88.storico.Chiamata;
 import ch.bono88.storico.SMS;
 import ch.bono88.supsicom.Sim;
@@ -31,9 +33,19 @@ public class NextGen extends Evoluto {
                     //mi connetto al telefono
                     tRic.connect();
 
+                    //creo la chiamata
+                    Chiamata c = new Chiamata(numero, durata,true , false);
+
                     //registro la videochiamata corrente nel registro
-                    addToRegVideoCall(numero, durata, false);
+                    addToRegVideoCall(c);
                     ((NextGen)tRic).addToRegVideoCall(numero, durata, true);
+
+                    if(sim.getContratto() instanceof Prepagato){
+                        ((Prepagato) sim.getContratto()).accreditaChiamata(c);
+                    }
+                    else{
+                        ((Abbonamento) sim.getContratto()).accreditaChiamata(c);
+                    }
 
                     //chiudo la comunicazione
                     tRic.disconnect();
@@ -55,6 +67,8 @@ public class NextGen extends Evoluto {
             addToRegVideoCall(numero, 0, true);
         else
             addToAvvisoVideoCall(numero);
+
+
     }
 
     public void sendMMS(String numero, String testo) throws Exception {
@@ -65,7 +79,14 @@ public class NextGen extends Evoluto {
       
          //salvo l'mms nel registro del telefono
         addToRegMMS(numero, testo, false);
-        
+
+          if(sim.getContratto() instanceof Prepagato){
+              ((Prepagato) sim.getContratto()).accreditaSMS();
+          }
+          else{
+              ((Abbonamento) sim.getContratto()).accreditaSMS(numero);
+          }
+
         //aggiungo l'mms al destinatario
         ((NextGen) tRic).incMMS(numero, testo);
         
@@ -93,6 +114,10 @@ public class NextGen extends Evoluto {
 
     public void addToRegVideoCall(String numero, int durata, boolean isIncoming) {
         this.regChiamate.add(new Chiamata(numero, durata, true, isIncoming));
+    }
+
+    public void addToRegVideoCall(Chiamata c) {
+        this.regChiamate.add(c);
     }
 
     public void addToRegMMS(String numero, String messaggio, boolean isIncoming) {

@@ -31,5 +31,29 @@ public class Abbonamento extends Contratto{
         else throw new Exception("Nessuna tariffa trovata!");
         a.setType(Attivita.TYPE_CALL);
         a.setFrom(c.getNumero());
+        costi.add(a);
+    }
+
+    public void accreditaSMS(String from){
+        //todo fare controllo 2 anni per tariffa fedelt`a
+        Attivita a = new Attivita();
+        a.setCost(tariffa.PRICE_SMS);
+        a.setFrom(from);
+        a.setType(Attivita.TYPE_SMS);
+    }
+
+    public void accreditaMMS(String from){
+        //todo fare controllo 2 anni per tariffa fedelt`a
+        Attivita a = new Attivita();
+        a.setCost(tariffa.PRICE_MMS);
+        a.setFrom(from);
+        a.setType(Attivita.TYPE_MMS);
+    }
+
+    private void accreditaVideoCall(Chiamata c){
+        Attivita a = new Attivita();
+        a.setCost(tariffa.PRICE_VIDEOCALL *c.getDurata());
+        a.setFrom(c.getNumero());
+        a.setType(Attivita.TYPE_MMS);
     }
 }
