@@ -15,6 +15,8 @@ public class SupsiCom {
     private List<Utente> alClienti;
     private List<Segreteria> alSegreterie;
 
+    public static final String SUPSICOM_NUMBER = "0000";
+
     public static final String SUPSICOM_PREFIX = "071";
 
     public SupsiCom() {
@@ -50,9 +52,21 @@ public class SupsiCom {
         //Tolgo tutti i messaggi in segreteria
         alSegreterie.removeAll(mySeg);
 
-
         return mySeg;
+    }
 
+    public void sendSUPSICOMSMS(String numero, String testo) throws Exception{
+        TelefonoBase tRic = findTel(numero);
+
+        //aggiungo l'sms al destinatario
+        tRic.incSMS(SUPSICOM_NUMBER, testo);
+    }
+
+    public void requireSaldo(Sim s) throws Exception{
+        if(s.getContratto() instanceof Prepagato)
+            sendSUPSICOMSMS(s.getNumeroTelefono(),"Il suo saldo residuo sono "+((Prepagato) s.getContratto()).getSaldo() + " chf");
+        else
+            throw new Exception("L'abbonamento non è prepagato");
     }
 
     public Utente insertCliente(String strNome, String strCognome, int intCAP, double dAVS) throws Exception {
@@ -82,9 +96,9 @@ public class SupsiCom {
         Sim s = new Sim(generaNumero());
         Contratto c;
         if (contractType == Contratto.TIPO_ABB)
-            c = new Abbonamento(u, s, tariffaType);
+            c = new Abbonamento(this,u, s, tariffaType);
         else
-            c = new Prepagato(u, s, tariffaType);
+            c = new Prepagato(this,u, s, tariffaType);
 
 
         alContratti.add(c);

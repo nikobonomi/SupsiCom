@@ -12,6 +12,7 @@ public abstract class Contratto {
     protected Tariffe tariffa;
     private boolean hasSegreteriaAbilitata;
     protected Date dataCreazione;
+    protected SupsiCom master;
 
     //tipologia che si utilizza nella creazione epr sapere
     //se si vuole create un'abbonamento o una prepagata
@@ -19,7 +20,8 @@ public abstract class Contratto {
     public static final int TIPO_PRE = 1;
 
 
-    public Contratto(Utente uFirmatario, Sim s, int tariffaTipo) throws Exception {
+    public Contratto(SupsiCom supsicom, Utente uFirmatario, Sim s, int tariffaTipo) throws Exception {
+        this.master = supsicom;
         this.dataCreazione = new Date();
         this.uFirmatario = uFirmatario;
         this.sim = s;

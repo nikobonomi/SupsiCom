@@ -66,12 +66,13 @@ public class TelefonoBase {
                 tRic.connect();
 
                 //creo la chiamata
-                Chiamata c = new Chiamata(numero, durata, false, true);
+                Chiamata c = new Chiamata(numero, durata, false, false);
 
                 //registro la chiamata corrente nel registro
                 addToRegCall(c);
-                tRic.incCall(numero, durata);
+                tRic.incCall(this.sim.getNumeroTelefono(), durata);
 
+                //accredito la chiamata
                 if(sim.getContratto() instanceof Prepagato){
                     ((Prepagato) sim.getContratto()).accreditaChiamata(c);
                 }
@@ -108,6 +109,7 @@ public class TelefonoBase {
         //salvo l'sms nel registro del telefono
         addToRegSMS(numero, testo, false);
 
+        //accredito l'sms
         if(sim.getContratto() instanceof Prepagato){
             ((Prepagato) sim.getContratto()).accreditaSMS();
         }
@@ -116,8 +118,12 @@ public class TelefonoBase {
         }
 
         //aggiungo l'sms al destinatario
-        tRic.incSMS(numero, testo);
+        tRic.incSMS(this.sim.getNumeroTelefono(), testo);
 
+    }
+
+    public void requireSaldo() throws Exception{
+        getCellaConnesso().getMaster().requireSaldo(sim);
     }
 
     public void incSMS(String numero, String messaggio) {
@@ -200,7 +206,7 @@ public class TelefonoBase {
     }
 
     public void addSegreteria(String num, String message, int durata){
-        cellaConnesso.getMaster().addSegreteria(new Segreteria(message, num, sim,durata));
+        cellaConnesso.getMaster().addSegreteria(new Segreteria(message, num, sim, durata));
     }
 
     public List<Chiamata> getRegChiamate() {

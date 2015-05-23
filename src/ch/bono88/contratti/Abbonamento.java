@@ -1,10 +1,7 @@
 package ch.bono88.contratti;
 
 import ch.bono88.storico.Chiamata;
-import ch.bono88.supsicom.Attivita;
-import ch.bono88.supsicom.Contratto;
-import ch.bono88.supsicom.Sim;
-import ch.bono88.supsicom.Utente;
+import ch.bono88.supsicom.*;
 import ch.bono88.tariffe.Base;
 import ch.bono88.tariffe.CallNight;
 import ch.bono88.tariffe.TopFriend;
@@ -15,8 +12,8 @@ import java.util.List;
 public class Abbonamento extends Contratto{
     private List<Attivita> costi;
 
-   public Abbonamento(Utente firmatario, Sim s, int tariffaType) throws Exception{
-        super(firmatario, s, tariffaType);
+   public Abbonamento(SupsiCom master, Utente firmatario, Sim s, int tariffaType) throws Exception{
+        super(master ,firmatario, s, tariffaType);
         costi = new ArrayList<>();
    }
 
@@ -40,6 +37,7 @@ public class Abbonamento extends Contratto{
         a.setCost(tariffa.PRICE_SMS);
         a.setFrom(from);
         a.setType(Attivita.TYPE_SMS);
+        costi.add(a);
     }
 
     public void accreditaMMS(String from){
@@ -48,6 +46,17 @@ public class Abbonamento extends Contratto{
         a.setCost(tariffa.PRICE_MMS);
         a.setFrom(from);
         a.setType(Attivita.TYPE_MMS);
+        costi.add(a);
+    }
+
+    public void printAttivita(){
+        float totalExpense = 0;
+        for(Attivita a : costi){
+            totalExpense += a.getCost();
+            System.out.println(a.getCost());
+        }
+
+        System.out.println("Spese totali " + totalExpense);
     }
 
     private void accreditaVideoCall(Chiamata c){

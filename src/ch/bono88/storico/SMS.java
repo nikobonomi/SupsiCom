@@ -38,14 +38,22 @@ public class SMS {
   
   	  @Override
   public String toString(){
-    return new StringBuilder()
-      .append("Da: ")
-      .append(numero)
-      .append(" Mssaggio: ")
-      .append(message)
-      .append(" Data")
-      .append(data)
-      .toString();
+          StringBuilder sb = new StringBuilder();
+
+          if (isIncoming)
+              sb.append("DA:");
+          else sb.append("A:");
+
+          sb
+                  .append(numero)
+                  .append(" Mssaggio: ")
+                  .append(message)
+                  .append(" Data")
+                  .append(data);
+
+          return sb.toString();
+
+
   }
 
 }

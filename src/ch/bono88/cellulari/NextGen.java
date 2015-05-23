@@ -38,8 +38,10 @@ public class NextGen extends Evoluto {
 
                     //registro la videochiamata corrente nel registro
                     addToRegVideoCall(c);
-                    ((NextGen)tRic).addToRegVideoCall(numero, durata, true);
 
+                    incVideoCall(this.sim.getNumeroTelefono(),durata);
+
+                    //Accredito la videochiamata
                     if(sim.getContratto() instanceof Prepagato){
                         ((Prepagato) sim.getContratto()).accreditaChiamata(c);
                     }
@@ -78,13 +80,14 @@ public class NextGen extends Evoluto {
       if (tRic instanceof NextGen) {
       
          //salvo l'mms nel registro del telefono
-        addToRegMMS(numero, testo, false);
+        addToRegMMS(this.sim.getNumeroTelefono(), testo, false);
 
+          //Accredito i costi di un mms
           if(sim.getContratto() instanceof Prepagato){
-              ((Prepagato) sim.getContratto()).accreditaSMS();
+              ((Prepagato) sim.getContratto()).accreditaMMS();
           }
           else{
-              ((Abbonamento) sim.getContratto()).accreditaSMS(numero);
+              ((Abbonamento) sim.getContratto()).accreditaMMS(numero);
           }
 
         //aggiungo l'mms al destinatario
