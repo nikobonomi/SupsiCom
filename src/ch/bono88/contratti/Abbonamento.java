@@ -49,6 +49,13 @@ public class Abbonamento extends Contratto{
         costi.add(a);
     }
 
+    //genero la fattura secondo le attività solte fin'ora
+    public Fattura generateFatura(){
+        Fattura f = new Fattura(new ArrayList<>(costi));
+        costi.clear();
+        return f;
+    }
+
     public void printAttivita(){
         float totalExpense = 0;
         for(Attivita a : costi){
