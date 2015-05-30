@@ -9,14 +9,17 @@ import ch.bono88.tariffe.Base;
 import ch.bono88.tariffe.CallNight;
 import ch.bono88.tariffe.TopFriend;
 
-
 public class Prepagato extends Contratto {
     private float saldo;
 
+    public static final int RIC_100 = 100;
+    public static final int RIC_50 = 50;
+    public static final int RIC_10 = 10;
+
     public Prepagato(SupsiCom supsiCom, Utente firmatario, Sim s, int tariffaType) throws Exception {
         super(supsiCom,firmatario, s, tariffaType);
-        //Supsicom condona 10 franchi di ricarica iniziale
-        this.saldo = 2;
+        //Supsicom condona 20 franchi di ricarica iniziale
+        this.saldo = 20;
     }
 
     public float getSaldo() {
@@ -30,7 +33,10 @@ public class Prepagato extends Contratto {
     public void checkSaldo() throws Exception{
         if(saldo<2)
             master.sendSUPSICOMSMS(getSim().getNumeroTelefono(),"Attenzione! credito inferiore a 2 chf! Le restano " + saldo + " chf");
+    }
 
+    public void ricarica(int saldo){
+        this.saldo += saldo;
     }
 
     public void accreditaChiamata(Chiamata c) throws Exception{
@@ -59,7 +65,7 @@ public class Prepagato extends Contratto {
         checkSaldo();
     }
 
-    private void accreditaVideoCall(Chiamata c){
+    public void accreditaVideoCall(Chiamata c){
         saldo -= tariffa.PRICE_VIDEOCALL *c.getDurata();
     }
 }

@@ -4,7 +4,9 @@ import ch.bono88.tariffe.Base;
 import ch.bono88.tariffe.CallNight;
 import ch.bono88.tariffe.TopFriend;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public abstract class Contratto {
     private Utente uFirmatario;

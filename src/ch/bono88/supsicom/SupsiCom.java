@@ -122,6 +122,12 @@ public class SupsiCom {
         return contr;
     }
 
+    public void ricarica(String num, int saldo){
+        for(Contratto c : alContratti)
+            if( c instanceof Prepagato && c.getSim().getNumeroTelefono().equals(num))
+                    ((Prepagato) c).ricarica(saldo);
+    }
+
     public Utente getCliente(String nome, String cognome) throws Exception {
 
         for (Utente u : alClienti)

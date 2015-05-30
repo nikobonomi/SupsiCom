@@ -2,6 +2,7 @@ package ch.bono88.supsicom;
 
 import ch.bono88.cellulari.NextGen;
 import ch.bono88.contratti.Abbonamento;
+import ch.bono88.contratti.Prepagato;
 import ch.bono88.tariffe.TopFriend;
 
 import java.io.Console;
@@ -58,10 +59,13 @@ public class Main {
 
             t2.requireSaldo();
 
-            //((Abbonamento) t.getSim().getContratto()).printAttivita();
+            for (Fattura f : ((Abbonamento) t.getSim().getContratto()).getFatture())
+                System.out.println(f);
 
             System.out.println("Utente 2");
 
+            t2.cellaConnesso.getMaster().ricarica(t2.getSim().getNumeroTelefono(), Prepagato.RIC_50);
+            t2.requireSaldo();
             u2.printReg();
 
 

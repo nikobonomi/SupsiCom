@@ -43,10 +43,10 @@ public class NextGen extends Evoluto {
 
                     //Accredito la videochiamata
                     if(sim.getContratto() instanceof Prepagato){
-                        ((Prepagato) sim.getContratto()).accreditaChiamata(c);
+                        ((Prepagato) sim.getContratto()).accreditaVideoCall(c);
                     }
                     else{
-                        ((Abbonamento) sim.getContratto()).accreditaChiamata(c);
+                        ((Abbonamento) sim.getContratto()).accreditaVideoCall(c);
                     }
 
                     //chiudo la comunicazione
