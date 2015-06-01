@@ -25,18 +25,6 @@ public class Sim {
         return this.numeroTelefono.toString();
     }
 
-    public void setNumeroTelefono(NumeroTelefono numeroTelefono) {
-        this.numeroTelefono = numeroTelefono;
-    }
-
-    public TelefonoBase getTelefonoAssociato() {
-        return telefonoAssociato;
-    }
-
-    public void setTelefonoAssociato(TelefonoBase telefonoAssociato) {
-        this.telefonoAssociato = telefonoAssociato;
-    }
-
     public Contratto getContratto() {
         return contratto;
     }

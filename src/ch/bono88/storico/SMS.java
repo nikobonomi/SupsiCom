@@ -16,22 +16,6 @@ public class SMS {
         this.isIncoming = isIncoming;
     }
 
-    public String getMessage() {
-        return this.message;
-    }
-
-    public String getNumero() {
-        return this.numero;
-    }
-
-    public Date getData() {
-        return this.data;
-    }
-
-    public boolean isIncoming() {
-        return this.isIncoming;
-    }
-
     public boolean isMMS() {
         return this.isMMS;
     }

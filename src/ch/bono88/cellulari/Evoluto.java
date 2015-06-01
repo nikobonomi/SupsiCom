@@ -2,6 +2,7 @@ package ch.bono88.cellulari;
 
 import java.util.ArrayList;
 
+import ch.bono88.exceptions.OutOfMaxConnectionsException;
 import ch.bono88.storico.Chiamata;
 import ch.bono88.storico.SMS;
 import ch.bono88.supsicom.Cella;
@@ -29,7 +30,7 @@ public class Evoluto extends TelefonoBase {
             addToAvvisoCall(numero);
     }
 
-    public void turnOn(Cella c) throws Exception {
+    public void turnOn(Cella c) throws OutOfMaxConnectionsException {
         this.isOn = true;
         //se ci sono sms in attesa di ricezione li "ricevo"
         if (avvisoSMS.size() > 0) {

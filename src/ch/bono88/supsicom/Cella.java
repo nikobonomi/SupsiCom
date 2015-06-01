@@ -1,5 +1,6 @@
 package ch.bono88.supsicom;
 
+import ch.bono88.exceptions.OutOfMaxConnectionsException;
 import ch.bono88.utils.NumeroTelefono;
 
 import java.awt.font.NumericShaper;
@@ -28,12 +29,12 @@ public class Cella {
         return false;
     }
 
-    public Cella connectTel(TelefonoBase t) throws Exception {
+    public Cella connectTel(TelefonoBase t) throws OutOfMaxConnectionsException {
         if (connPossibile()) {
             alTelConnessi.add(t);
             return this;
         }
-        throw new Exception("Raggiunto numero massimo di connessioni");
+        throw new OutOfMaxConnectionsException("Raggiunto numero massimo di connessioni");
     }
 
     public Cella disconnectTel(TelefonoBase t) {

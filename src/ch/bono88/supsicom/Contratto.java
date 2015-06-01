@@ -1,5 +1,6 @@
 package ch.bono88.supsicom;
 
+import ch.bono88.exceptions.TariffaNotFoundException;
 import ch.bono88.tariffe.Base;
 import ch.bono88.tariffe.CallNight;
 import ch.bono88.tariffe.TopFriend;
@@ -22,7 +23,7 @@ public abstract class Contratto {
     public static final int TIPO_PRE = 1;
 
 
-    public Contratto(SupsiCom supsicom, Utente uFirmatario, Sim s, int tariffaTipo) throws Exception {
+    public Contratto(SupsiCom supsicom, Utente uFirmatario, Sim s, int tariffaTipo) throws TariffaNotFoundException {
         this.master = supsicom;
         this.dataCreazione = new Date();
         this.uFirmatario = uFirmatario;
@@ -35,7 +36,7 @@ public abstract class Contratto {
         else if (tariffaTipo == Tariffe.TIPO_TAR_TFRI)
             this.tariffa = new TopFriend();
         else
-            throw new Exception("Il tipo di tariffa selezionato non esiste");
+            throw new TariffaNotFoundException("Il tipo di tariffa selezionato non esiste");
 
 
     }

@@ -3,6 +3,7 @@ package ch.bono88.supsicom;
 import ch.bono88.cellulari.NextGen;
 import ch.bono88.contratti.Abbonamento;
 import ch.bono88.contratti.Prepagato;
+import ch.bono88.exceptions.*;
 import ch.bono88.tariffe.TopFriend;
 
 import java.io.Console;
@@ -69,7 +70,20 @@ public class Main {
             u2.printReg();
 
 
-        } catch (Exception e) {
+
+        } catch (PhoneOfflineException e) {
+            e.printStackTrace();
+        } catch (OutOfMaxConnectionsException e) {
+            e.printStackTrace();
+        } catch (TariffaNotFoundException e) {
+            e.printStackTrace();
+        } catch (CustomerAleryExistException e) {
+            e.printStackTrace();
+        } catch (ContractTypeNotValidException e) {
+            e.printStackTrace();
+        } catch (NumberNotFoundException e) {
+            e.printStackTrace();
+        } catch (PhoneIdleException e) {
             e.printStackTrace();
         }
 

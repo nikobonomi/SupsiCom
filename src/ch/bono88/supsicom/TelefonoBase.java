@@ -3,6 +3,7 @@ package ch.bono88.supsicom;
 import ch.bono88.cellulari.Evoluto;
 import ch.bono88.contratti.Abbonamento;
 import ch.bono88.contratti.Prepagato;
+import ch.bono88.exceptions.*;
 import ch.bono88.storico.Chiamata;
 import ch.bono88.storico.SMS;
 
@@ -27,17 +28,17 @@ public class TelefonoBase {
         this.avvisoSMS = new ArrayList<>();
     }
 
-    public void connectCella(Cella c) throws Exception {
+    public void connectCella(Cella c) throws OutOfMaxConnectionsException {
         if (c.connPossibile()) {
             this.cellaConnesso = c;
             c.connectTel(this);
         } else
-            throw new Exception("Raggiunto numero massimo connessioni per cella");
+            throw new OutOfMaxConnectionsException("Raggiunto numero massimo connessioni per cella");
     }
 
-    public void enableSegreteria(boolean enable)throws Exception{
+    public void enableSegreteria(boolean enable)throws PhoneOfflineException{
         if(cellaConnesso ==null)
-            throw new Exception("Il telefono deve essere connesso per poter attivare la segreteria!!");
+            throw new PhoneOfflineException("Il telefono deve essere connesso per poter attivare la segreteria!!");
         cellaConnesso.getMaster().enableSegreteria(sim,enable);
     }
 
@@ -45,7 +46,7 @@ public class TelefonoBase {
         return cellaConnesso.getMaster().hasSegreteria(sim);
     }
 
-    public boolean call(String numero, int durata) throws Exception {
+    public boolean call(String numero, int durata) throws NumberNotFoundException, PhoneOfflineException, PhoneIdleException, TariffaNotFoundException {
         TelefonoBase tRic = cellaConnesso.getMaster().findTel(numero);
 
         if (!tRic.isOn())
@@ -56,7 +57,7 @@ public class TelefonoBase {
             if (tRic instanceof Evoluto)
                 ((Evoluto) tRic).addToAvvisoCall(numero);
             else
-                throw new Exception("Telefono spento");
+                throw new PhoneOfflineException("Telefono spento");
 
         else
             //telefono acceso
@@ -85,21 +86,21 @@ public class TelefonoBase {
 
                 return true;
             } else
-                throw new Exception("Telefono occupato");
+                throw new PhoneIdleException("Telefono occupato");
 
 
         return false;
 
     }
 
-    public void incCall(String numero, int durata) throws Exception {
+    public void incCall(String numero, int durata) throws PhoneOfflineException {
         if (isOn())
             addToRegCall(numero, durata, true);
         else
-            throw new Exception("Il telefono è spento. Non può ricevere chiamate.");
+            throw new PhoneOfflineException("Il telefono è spento. Non può ricevere chiamate.");
     }
 
-    public void sendSMS(String numero, String testo) throws Exception {
+    public void sendSMS(String numero, String testo) throws NumberNotFoundException {
         TelefonoBase tRic = cellaConnesso.getMaster().findTel(numero);
 
         //non faccio la connessione al telefono e non controllo che sia acceso
@@ -122,7 +123,7 @@ public class TelefonoBase {
 
     }
 
-    public void requireSaldo() throws Exception{
+    public void requireSaldo() throws NumberNotFoundException, ContractTypeNotValidException {
         getCellaConnesso().getMaster().requireSaldo(sim);
     }
 
@@ -147,7 +148,7 @@ public class TelefonoBase {
         return this.cellaConnesso;
     }
 
-    public void turnOn(Cella c) throws Exception {
+    public void turnOn(Cella c) throws OutOfMaxConnectionsException {
 
         this.isOn = true;
         //se ci sono sms in attesa di ricezione li "ricevo"

@@ -4,6 +4,7 @@ import ch.bono88.storico.Chiamata;
 import ch.bono88.storico.SMS;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Utente {
@@ -12,7 +13,7 @@ public class Utente {
     private String                  strCognome;
     private int                     intCAP;
 
-    private ArrayList<TelefonoBase> telefoni;
+    private List<TelefonoBase> telefoni;
 
 
     public Utente(String strNome, String strCognome, int intCAP, double dAVS) {
@@ -20,7 +21,7 @@ public class Utente {
         this.strCognome = strCognome;
         this.intCAP = intCAP;
         this.dAVS = dAVS;
-        this.telefoni = new ArrayList<TelefonoBase>();
+        this.telefoni = new ArrayList<>();
     }
 
     public void printReg() {
@@ -60,7 +61,7 @@ public class Utente {
         return this.strNome;
     }
 
-    public ArrayList<TelefonoBase> getTelefoni() {
+    public List<TelefonoBase> getTelefoni() {
         return telefoni;
     }
 
@@ -69,20 +70,8 @@ public class Utente {
 
     }
 
-    public ArrayList<TelefonoBase> getTelefoniNoSim() {
-        ArrayList<TelefonoBase> telefoniNoSim = new ArrayList<TelefonoBase>();
-        for (TelefonoBase t : telefoni)
-            if (t.getSim().equals(null))
-                telefoniNoSim.add(t);
-        return telefoniNoSim;
-    }
-
     public String getCognome() {
         return this.strCognome;
-    }
-
-    public int getCAP() {
-        return this.intCAP;
     }
 
     public double getAVS() {

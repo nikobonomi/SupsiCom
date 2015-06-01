@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import ch.bono88.contratti.Abbonamento;
 import ch.bono88.contratti.Prepagato;
+import ch.bono88.exceptions.IncompatiblePhoneException;
+import ch.bono88.exceptions.NumberNotFoundException;
+import ch.bono88.exceptions.OutOfMaxConnectionsException;
 import ch.bono88.storico.Chiamata;
 import ch.bono88.storico.SMS;
 import ch.bono88.supsicom.Sim;
@@ -20,11 +23,11 @@ public class NextGen extends Evoluto {
     }
 
 
-    public void videoCall(String numero, int durata) throws Exception {
+    public void videoCall(String numero, int durata) throws IncompatiblePhoneException, OutOfMaxConnectionsException, NumberNotFoundException {
         TelefonoBase tRic = cellaConnesso.getMaster().findTel(numero);
 
         if (tRic.equals(null)) {
-            throw new Exception("Raggiunto numero massimo connessioni per cella");
+            throw new OutOfMaxConnectionsException("Raggiunto numero massimo connessioni per cella");
         } else {
             //telefono acceso
 
@@ -56,7 +59,7 @@ public class NextGen extends Evoluto {
                     ((NextGen)tRic).addToAvvisoVideoCall(numero);
                 }
             } else {
-                throw new Exception("Il telefono non supporta le videochiamate");
+                throw new IncompatiblePhoneException("Il telefono non supporta le videochiamate");
             }
 
         }
@@ -73,7 +76,7 @@ public class NextGen extends Evoluto {
 
     }
 
-    public void sendMMS(String numero, String testo) throws Exception {
+    public void sendMMS(String numero, String testo) throws NumberNotFoundException, IncompatiblePhoneException {
       
       TelefonoBase tRic = cellaConnesso.getMaster().findTel(numero);
 
@@ -95,7 +98,7 @@ public class NextGen extends Evoluto {
         
       }
       else
-        throw new Exception("Il telefono non supporta gli mms");
+        throw new IncompatiblePhoneException("Il telefono non supporta gli mms");
 
     }
 

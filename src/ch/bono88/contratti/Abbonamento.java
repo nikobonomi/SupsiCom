@@ -1,5 +1,6 @@
 package ch.bono88.contratti;
 
+import ch.bono88.exceptions.TariffaNotFoundException;
 import ch.bono88.storico.Chiamata;
 import ch.bono88.supsicom.*;
 import ch.bono88.tariffe.Base;
@@ -12,12 +13,12 @@ import java.util.List;
 public class Abbonamento extends Contratto {
     private List<Fattura> fatture;
 
-    public Abbonamento(SupsiCom master, Utente firmatario, Sim s, int tariffaType) throws Exception {
+    public Abbonamento(SupsiCom master, Utente firmatario, Sim s, int tariffaType) throws TariffaNotFoundException {
         super(master, firmatario, s, tariffaType);
         fatture = new ArrayList<>();
     }
 
-    public void accreditaChiamata(Chiamata c) throws Exception {
+    public void accreditaChiamata(Chiamata c) throws TariffaNotFoundException {
         Attivita a = new Attivita();
         if (tariffa instanceof Base)
             a.setCost(Base.PRICE_CALL_START + Base.PRICE_CALL * c.getDurata());
@@ -25,7 +26,7 @@ public class Abbonamento extends Contratto {
             a.setCost(((TopFriend) tariffa).getCallCost(c));
         else if (tariffa instanceof CallNight)
             a.setCost(((CallNight) tariffa).getCallCost(c));
-        else throw new Exception("Nessuna tariffa trovata!");
+        else throw new TariffaNotFoundException("Nessuna tariffa trovata!");
         a.setType(Attivita.TYPE_CALL);
         a.setFrom(c.getNumero());
         a.setDurata(c.getDurata());

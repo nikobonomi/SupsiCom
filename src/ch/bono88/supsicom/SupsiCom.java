@@ -1,5 +1,6 @@
 package ch.bono88.supsicom;
 
+import ch.bono88.exceptions.*;
 import ch.bono88.utils.MyRandom;
 import ch.bono88.utils.NumeroTelefono;
 
@@ -55,34 +56,27 @@ public class SupsiCom {
         return mySeg;
     }
 
-    public void sendSUPSICOMSMS(String numero, String testo) throws Exception{
+    public void sendSUPSICOMSMS(String numero, String testo) throws NumberNotFoundException{
         TelefonoBase tRic = findTel(numero);
 
         //aggiungo l'sms al destinatario
         tRic.incSMS(SUPSICOM_NUMBER, testo);
     }
 
-    public void requireSaldo(Sim s) throws Exception{
+    public void requireSaldo(Sim s) throws ContractTypeNotValidException,NumberNotFoundException{
         if(s.getContratto() instanceof Prepagato)
             sendSUPSICOMSMS(s.getNumeroTelefono(),"Il suo saldo residuo sono "+((Prepagato) s.getContratto()).getSaldo() + " chf");
         else
-            throw new Exception("L'abbonamento non è prepagato");
+            throw new ContractTypeNotValidException("L'abbonamento non è prepagato");
     }
 
-    public Utente insertCliente(String strNome, String strCognome, int intCAP, double dAVS) throws Exception {
+    public Utente insertCliente(String strNome, String strCognome, int intCAP, double dAVS) throws CustomerAleryExistException {
         for (Utente u : alClienti)
             if (u.getAVS() == dAVS)
-                throw new Exception("AVS specificata già esistente");
+                throw new CustomerAleryExistException("AVS specificata già esistente");
         Utente u = new Utente(strNome, strCognome, intCAP, dAVS);
         alClienti.add(u);
         return u;
-    }
-
-    public TelefonoBase getTelFromNumber(String number) throws Exception {
-        for (Contratto c : alContratti)
-            if (c.getSim().getNumeroTelefono().equals(number))
-                return c.getSim().getTel();
-        throw new Exception("Numero non trovato");
     }
 
     public Cella getRandomCella() {
@@ -91,7 +85,7 @@ public class SupsiCom {
         return alCelle.get(0);
     }
 
-    public Sim insertContratto(Utente u, int contractType, int tariffaType) throws Exception {
+    public Sim insertContratto(Utente u, int contractType, int tariffaType) throws TariffaNotFoundException {
 
         Sim s = new Sim(generaNumero());
         Contratto c;
@@ -128,19 +122,19 @@ public class SupsiCom {
                     ((Prepagato) c).ricarica(saldo);
     }
 
-    public Utente getCliente(String nome, String cognome) throws Exception {
+    public Utente getCliente(String nome, String cognome) throws CustomerNotFoundException {
 
         for (Utente u : alClienti)
             if (u.getNome().equals(nome) && u.getCognome().equals(cognome))
                 return u;
-        throw new Exception("Il cliente cercato non è stato trovato");
+        throw new CustomerNotFoundException("Il cliente cercato non è stato trovato");
     }
 
-    public Utente getCliente(double nAvs) throws Exception {
+    public Utente getCliente(double nAvs) throws CustomerNotFoundException {
         for (Utente u : alClienti)
             if (u.getAVS() == nAvs)
                 return u;
-        throw new Exception("Il cliente cercato non è stato trovato");
+        throw new CustomerNotFoundException("Il cliente cercato non è stato trovato");
     }
 
     private NumeroTelefono generaNumero() {
@@ -160,7 +154,7 @@ public class SupsiCom {
         return false;
     }
 
-    public TelefonoBase findTel(String numeroTel) throws Exception {
+    public TelefonoBase findTel(String numeroTel) throws NumberNotFoundException {
         TelefonoBase t;
         if (checkNumberExists(numeroTel))
             for (Cella c : alCelle) {
@@ -175,7 +169,7 @@ public class SupsiCom {
 
 
             else
-                throw new Exception("Numero inesistente");
+                throw new NumberNotFoundException("Numero inesistente");
 
         return null;
     }

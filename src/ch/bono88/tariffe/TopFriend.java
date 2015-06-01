@@ -1,5 +1,6 @@
 package ch.bono88.tariffe;
 
+import ch.bono88.exceptions.OutOfMaxFriendsException;
 import ch.bono88.storico.Chiamata;
 import ch.bono88.supsicom.Tariffe;
 import ch.bono88.supsicom.TelefonoBase;
@@ -25,12 +26,12 @@ public class TopFriend extends Tariffe {
         return c.getDurata() * PRICE_CALL;
     }
 
-    public void addAmico(Utente u) throws Exception {
+    public void addAmico(Utente u) throws OutOfMaxFriendsException {
         for (int i = 0; i < amici.length; i++)
             if (amici[i] == null) {
                 amici[i] = u;
                 return;
             }
-        throw new Exception("Raggiunto limite massimo di 5 amici!");
+        throw new OutOfMaxFriendsException("Raggiunto limite massimo di 5 amici!");
     }
 }

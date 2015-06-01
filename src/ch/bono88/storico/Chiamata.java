@@ -54,8 +54,5 @@ public class Chiamata {
         return this.isVideocall;
     }
 
-    public boolean isIncoming() {
-        return this.isIncoming;
-    }
 
 }
