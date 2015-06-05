@@ -1,9 +1,11 @@
 package ch.bono88.storico;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
-public class Chiamata {
+public class Chiamata implements Serializable{
+    private static final long serialVersionUID = 4L;
     private String numero;
     private Date data;
     private int durata;

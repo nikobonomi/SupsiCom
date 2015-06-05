@@ -1,11 +1,12 @@
 package ch.bono88.supsicom;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Niko on 22.05.2015.
  */
-public class Attivita {
+public class Attivita implements Serializable{
     private int type;
     private float cost;
     private String from;
@@ -17,12 +18,7 @@ public class Attivita {
     public static final int TYPE_MMS=3;
     public static final int TYPE_VIDEO=3;
 
-    public Attivita(int type, float cost, String from) {
-        this.type = type;
-        this.cost = cost;
-        this.from = from;
-        this.data = new Date();
-    }
+    private static final long serialVersionUID = 6L;
 
     public Attivita(int type, float cost, String from,int durata) {
         this.type = type;

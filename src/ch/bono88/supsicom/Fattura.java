@@ -3,6 +3,7 @@ package ch.bono88.supsicom;
 import ch.bono88.contratti.Abbonamento;
 import sun.util.calendar.CalendarDate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,7 +12,8 @@ import java.util.List;
 /**
  * Created by Niko on 26.05.2015.
  */
-public class Fattura {
+public class Fattura implements Serializable{
+    private static final long serialVersionUID = 9L;
     private List<Attivita> attivita;
     private float totalCost;
     private Date dataEmissione;

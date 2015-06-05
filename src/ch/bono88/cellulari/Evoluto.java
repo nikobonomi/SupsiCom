@@ -1,5 +1,6 @@
 package ch.bono88.cellulari;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import ch.bono88.exceptions.OutOfMaxConnectionsException;
@@ -9,10 +10,11 @@ import ch.bono88.supsicom.Cella;
 import ch.bono88.supsicom.Sim; 
 import ch.bono88.supsicom.TelefonoBase;
 
-public class Evoluto extends TelefonoBase {
+public class Evoluto extends TelefonoBase implements Serializable{
 
 
     protected ArrayList<Chiamata> avvisiChiamate;
+    private static final long serialVersionUID = 2L;
 
     private boolean               isSegOn;
 

@@ -3,7 +3,10 @@ package ch.bono88.supsicom;
 import ch.bono88.supsicom.TelefonoBase;
 import ch.bono88.utils.NumeroTelefono;
 
-public class Sim {
+import java.io.Serializable;
+
+public class Sim implements Serializable{
+    private static final long serialVersionUID = 11L;
     private NumeroTelefono numeroTelefono;
     private TelefonoBase   telefonoAssociato;
     private Contratto contratto;

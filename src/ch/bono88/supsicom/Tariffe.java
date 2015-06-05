@@ -1,10 +1,13 @@
 package ch.bono88.supsicom;
 
-public abstract class Tariffe {
+import java.io.Serializable;
+
+public abstract class Tariffe implements Serializable{
     //Tipologia di tariffa selezionata
     public static final int TIPO_TAR_BASE = 0;
     public static final int TIPO_TAR_CNIG = 1;
     public static final int TIPO_TAR_TFRI = 2;
+    private static final long serialVersionUID = 13L;
 
     public static final float PRICE_SMS = 0.05f;
     public static final float PRICE_MMS = 0.10f;

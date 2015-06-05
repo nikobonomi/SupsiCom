@@ -6,12 +6,15 @@ import ch.bono88.supsicom.Tariffe;
 import ch.bono88.supsicom.TelefonoBase;
 import ch.bono88.supsicom.Utente;
 
+import java.io.Serializable;
 
-public class TopFriend extends Tariffe {
+
+public class TopFriend extends Tariffe implements Serializable{
     private Utente[] amici;
 
     private static final float PRICE_CALL_FRIEND = 0.05f;
     private static final float PRICE_CALL = 0.15f;
+    private static final long serialVersionUID = 17L;
 
     public TopFriend() {
         this.amici = new Utente[5];

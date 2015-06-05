@@ -1,9 +1,11 @@
 package ch.bono88.supsicom;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Segreteria {
+public class Segreteria implements Serializable{
+    private static final long serialVersionUID = 10L;
     private Date date;
     private String message;
     private String numMittente;

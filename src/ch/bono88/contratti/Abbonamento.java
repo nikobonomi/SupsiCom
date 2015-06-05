@@ -7,11 +7,13 @@ import ch.bono88.tariffe.Base;
 import ch.bono88.tariffe.CallNight;
 import ch.bono88.tariffe.TopFriend;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Abbonamento extends Contratto {
+public class Abbonamento extends Contratto implements Serializable{
     private List<Fattura> fatture;
+    private static final long serialVersionUID = 3L;
 
     public Abbonamento(SupsiCom master, Utente firmatario, Sim s, int tariffaType) throws TariffaNotFoundException {
         super(master, firmatario, s, tariffaType);

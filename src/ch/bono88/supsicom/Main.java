@@ -7,6 +7,7 @@ import ch.bono88.exceptions.*;
 import ch.bono88.tariffe.TopFriend;
 
 import java.io.Console;
+import java.io.IOException;
 import java.util.logging.ConsoleHandler;
 
 public class Main {
@@ -70,6 +71,8 @@ public class Main {
             u2.printReg();
 
 
+            supsiCom.saveUsers();
+
 
         } catch (PhoneOfflineException e) {
             e.printStackTrace();
@@ -84,6 +87,8 @@ public class Main {
         } catch (NumberNotFoundException e) {
             e.printStackTrace();
         } catch (PhoneIdleException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

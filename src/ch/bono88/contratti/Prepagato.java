@@ -11,8 +11,11 @@ import ch.bono88.tariffe.Base;
 import ch.bono88.tariffe.CallNight;
 import ch.bono88.tariffe.TopFriend;
 
-public class Prepagato extends Contratto {
+import java.io.Serializable;
+
+public class Prepagato extends Contratto implements Serializable{
     private float saldo;
+    private static final long serialVersionUID = 4L;
 
     public static final int RIC_100 = 100;
     public static final int RIC_50 = 50;

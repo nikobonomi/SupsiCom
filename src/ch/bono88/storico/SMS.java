@@ -1,12 +1,14 @@
 package ch.bono88.storico;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
-public class SMS {
+public class SMS implements Serializable{
     private String numero, message;
     private Date   data;
     private boolean isMMS, isIncoming;
+    private static final long serialVersionUID = 5L;
 
     public SMS(String numero, boolean isMMS, String message, boolean isIncoming) {
         this.numero = numero;

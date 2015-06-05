@@ -3,17 +3,20 @@ package ch.bono88.supsicom;
 import ch.bono88.storico.Chiamata;
 import ch.bono88.storico.SMS;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Utente {
+public class Utente implements Serializable {
     private double                  dAVS;
     private String                  strNome;
     private String                  strCognome;
     private int                     intCAP;
 
-    private List<TelefonoBase> telefoni;
+    private static final long serialVersionUID = 1L;
+
+    private transient List<TelefonoBase> telefoni;
 
 
     public Utente(String strNome, String strCognome, int intCAP, double dAVS) {
@@ -66,6 +69,8 @@ public class Utente {
     }
 
     public void addTelefono(TelefonoBase tel) {
+        if (telefoni == null)
+            telefoni = new ArrayList<>();
         telefoni.add(tel);
 
     }

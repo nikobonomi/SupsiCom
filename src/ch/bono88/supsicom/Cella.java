@@ -4,13 +4,15 @@ import ch.bono88.exceptions.OutOfMaxConnectionsException;
 import ch.bono88.utils.NumeroTelefono;
 
 import java.awt.font.NumericShaper;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cella {
+public class Cella implements Serializable{
 
     private ArrayList<TelefonoBase> alTelConnessi;
     private SupsiCom                master;
     private int                     maxConnections;
+    private static final long serialVersionUID = 7L;
 
 
     public Cella(SupsiCom master, int maxConnections) {

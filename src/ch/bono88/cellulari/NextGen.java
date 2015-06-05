@@ -1,5 +1,6 @@
 package ch.bono88.cellulari;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import ch.bono88.contratti.Abbonamento;
@@ -12,11 +13,11 @@ import ch.bono88.storico.SMS;
 import ch.bono88.supsicom.Sim;
 import ch.bono88.supsicom.TelefonoBase;
 
-public class NextGen extends Evoluto {
+public class NextGen extends Evoluto implements Serializable{
 
     protected ArrayList<Chiamata> avvisiVideoChiamate;
     protected ArrayList<SMS>      avvisiMMS;
-
+    private static final long serialVersionUID = 3L;
 
     public NextGen() {
         super();

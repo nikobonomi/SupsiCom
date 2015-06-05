@@ -1,6 +1,9 @@
 package ch.bono88.utils;
 
-public class NumeroTelefono {
+import java.io.Serializable;
+
+public class NumeroTelefono implements Serializable{
+  private static final long serialVersionUID = 20L;
   private String prefix;
   int number;
   

@@ -7,10 +7,12 @@ import ch.bono88.exceptions.*;
 import ch.bono88.storico.Chiamata;
 import ch.bono88.storico.SMS;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TelefonoBase {
+public class TelefonoBase implements Serializable{
+    private static final long serialVersionUID = 14L;
     protected Sim sim;
     protected boolean isOn;
     protected Cella cellaConnesso;

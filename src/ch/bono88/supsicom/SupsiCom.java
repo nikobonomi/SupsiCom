@@ -7,10 +7,12 @@ import ch.bono88.utils.NumeroTelefono;
 import ch.bono88.contratti.Abbonamento;
 import ch.bono88.contratti.Prepagato;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupsiCom {
+public class SupsiCom implements Serializable{
+    private static final long serialVersionUID = 12L;
     private List<Contratto> alContratti;
     private List<Cella> alCelle;
     private List<Utente> alClienti;
@@ -26,6 +28,8 @@ public class SupsiCom {
         alClienti = new ArrayList<>();
         alSegreterie = new ArrayList<>();
     }
+
+
 
     public void enableSegreteria(Sim s, boolean enable) {
         for (Contratto c : alContratti)

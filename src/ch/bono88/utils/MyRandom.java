@@ -1,10 +1,11 @@
 package ch.bono88.utils;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class MyRandom extends Random {
+public class MyRandom extends Random implements Serializable{
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 18L;
   
     public MyRandom() {
         super();
