@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupsiCom implements Serializable{
+public class SupsiCom implements Serializable {
     private static final long serialVersionUID = 12L;
     private List<Contratto> alContratti;
     private List<Cella> alCelle;
@@ -29,7 +29,44 @@ public class SupsiCom implements Serializable{
         alSegreterie = new ArrayList<>();
     }
 
+    public boolean hasSavedState() {
+        File f = new File(System.getProperty("user.dir") + "\\supsicom.ser");
+        return f.exists();
+    }
 
+    public SupsiCom loadState() throws IOException, ClassNotFoundException {
+        File f = new File(System.getProperty("user.dir") + "\\supsicom.ser");
+
+        FileInputStream fin = new FileInputStream(f);
+        ObjectInputStream ois = new ObjectInputStream(fin);
+
+        try {
+            SupsiCom s = (SupsiCom) ois.readObject();
+            return s;
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            ois.close();
+        }
+    }
+
+    public void saveState() throws IOException {
+
+        File f = new File(System.getProperty("user.dir") + "\\supsicom.ser");
+
+        if (!f.exists())
+            f.createNewFile();
+
+        FileOutputStream fout = new FileOutputStream(f);
+        ObjectOutputStream oos = new ObjectOutputStream(fout);
+        try {
+            oos.writeObject(this);
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            oos.close();
+        }
+    }
 
     public void enableSegreteria(Sim s, boolean enable) {
         for (Contratto c : alContratti)
@@ -60,16 +97,16 @@ public class SupsiCom implements Serializable{
         return mySeg;
     }
 
-    public void sendSUPSICOMSMS(String numero, String testo) throws NumberNotFoundException{
+    public void sendSUPSICOMSMS(String numero, String testo) throws NumberNotFoundException {
         TelefonoBase tRic = findTel(numero);
 
         //aggiungo l'sms al destinatario
         tRic.incSMS(SUPSICOM_NUMBER, testo);
     }
 
-    public void requireSaldo(Sim s) throws ContractTypeNotValidException,NumberNotFoundException{
-        if(s.getContratto() instanceof Prepagato)
-            sendSUPSICOMSMS(s.getNumeroTelefono(),"Il suo saldo residuo sono "+((Prepagato) s.getContratto()).getSaldo() + " chf");
+    public void requireSaldo(Sim s) throws ContractTypeNotValidException, NumberNotFoundException {
+        if (s.getContratto() instanceof Prepagato)
+            sendSUPSICOMSMS(s.getNumeroTelefono(), "Il suo saldo residuo sono " + ((Prepagato) s.getContratto()).getSaldo() + " chf");
         else
             throw new ContractTypeNotValidException("L'abbonamento non è prepagato");
     }
@@ -94,9 +131,9 @@ public class SupsiCom implements Serializable{
         Sim s = new Sim(generaNumero());
         Contratto c;
         if (contractType == Contratto.TIPO_ABB)
-            c = new Abbonamento(this,u, s, tariffaType);
+            c = new Abbonamento(this, u, s, tariffaType);
         else
-            c = new Prepagato(this,u, s, tariffaType);
+            c = new Prepagato(this, u, s, tariffaType);
 
 
         alContratti.add(c);
@@ -120,10 +157,10 @@ public class SupsiCom implements Serializable{
         return contr;
     }
 
-    public void ricarica(String num, int saldo){
-        for(Contratto c : alContratti)
-            if( c instanceof Prepagato && c.getSim().getNumeroTelefono().equals(num))
-                    ((Prepagato) c).ricarica(saldo);
+    public void ricarica(String num, int saldo) {
+        for (Contratto c : alContratti)
+            if (c instanceof Prepagato && c.getSim().getNumeroTelefono().equals(num))
+                ((Prepagato) c).ricarica(saldo);
     }
 
     public Utente getCliente(String nome, String cognome) throws CustomerNotFoundException {

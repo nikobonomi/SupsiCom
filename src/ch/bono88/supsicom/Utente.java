@@ -16,7 +16,7 @@ public class Utente implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private transient List<TelefonoBase> telefoni;
+    private List<TelefonoBase> telefoni;
 
 
     public Utente(String strNome, String strCognome, int intCAP, double dAVS) {
