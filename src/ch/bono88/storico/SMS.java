@@ -19,6 +19,7 @@ public class SMS implements Serializable{
     }
 
     public boolean isMMS() {
+	System.out.println("ciao")
         return this.isMMS;
     }
   
