@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 
+
+
+
 public class SMS implements Serializable{
     private String numero, message;
     private Date   data;
